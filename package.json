@@ -1,0 +1,33 @@
+{
+  "name": "book-for-me",
+  "version": "1.0.0",
+  "description": "Event booking platform using node, graphql, mongo, react",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/niyatN/Book-for-me.git"
+  },
+  "keywords": [
+    "nodejs",
+    "reactjs",
+    "graphql",
+    "mongo"
+  ],
+  "author": "Niyat Patel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/niyatN/Book-for-me/issues"
+  },
+  "homepage": "https://github.com/niyatN/Book-for-me#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}
