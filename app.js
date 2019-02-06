@@ -9,13 +9,29 @@ const app = express();
 // middleware
 app.use(bodyParser.json());
 
+const events = [];
+
 app.use('/graphql',graphqlHttp({
     schema: buildSchema(`
+        type Event{
+            _id: ID!
+            title: String!
+            description: String!
+            price: Float!
+            date: String
+        }
+
+        input EventInput {
+            title: String!
+            description: String!
+            price:Float!
+            date:String!
+        }
         type RootQuery {
-            events: [String!]!
+            events: [Event!]!
         }
         type RootMutation {
-            createEvent(name: String):String
+            createEvent(eventInput: EventInput):Event
         }
         schema{
             query: RootQuery
@@ -25,11 +41,20 @@ app.use('/graphql',graphqlHttp({
     // resolvers
     rootValue: {
         events:()=>{
-            return ['Cooking','for','Coding','or', 'vise', 'vresa'];
+            return events;
         },
         createEvent: (args)=>{
-            const eventName = args.name;
-            return eventName;
+            // const eventName = args.name;
+            // return eventName;
+            const event = {
+                _id:Math.random().toString(),
+                title:args.eventInput.title,
+                description:args.eventInput.description,
+                price: +args.eventInput.price,
+                date: args.eventInput.date
+            }
+            events.push(event);
+            return event;
         }
     },
     graphiql:true
