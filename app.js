@@ -6,6 +6,9 @@ const graphqlHttp = require('express-graphql');
 const { buildSchema } = require('graphql');
 const app = express();
 
+// for db connection
+
+const mongoose = require('mongoose');
 // middleware
 app.use(bodyParser.json());
 
@@ -63,9 +66,16 @@ app.use('/graphql',graphqlHttp({
 app.get('/', (req, res, next)=>{
     res.send('1+1=10')
 })
-
-
-app.listen(3000,(err)=>{
-    if(err) throw err;
-    console.log('I am listeng...')
-})
+// ${process.env.MONGO_USER}
+// ${process.env.MONGO_PASSWORD}
+mongoose.connect(
+    `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@localhost:27017/${process.env.MONGO_DB}?authSource=admin`,
+    { useNewUrlParser: true }
+    ).then(()=>{
+        app.listen(3000,(err)=>{
+            if(err) throw err;
+            console.log('I am listeng...')
+        });
+    }).catch(err=>{
+        console.log(err);
+    });
