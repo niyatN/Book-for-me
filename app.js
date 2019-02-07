@@ -7,12 +7,13 @@ const { buildSchema } = require('graphql');
 const app = express();
 
 // for db connection
-
 const mongoose = require('mongoose');
+
+// Models // here we use as constructor
+const Event = require('./models/event');
 // middleware
 app.use(bodyParser.json());
 
-const events = [];
 
 app.use('/graphql',graphqlHttp({
     schema: buildSchema(`
@@ -44,20 +45,38 @@ app.use('/graphql',graphqlHttp({
     // resolvers
     rootValue: {
         events:()=>{
-            return events;
+            // Event.find({title:'1'})
+            return Event.find()
+            .then((events)=>{
+                return events.map(event=>{
+                    // _id:event.id ===_id: event._doc._id.toString() 
+                    return{...event._doc, _id: event.id};  
+                });
+            }).catch((err)=>{
+                throw err;
+            });
         },
         createEvent: (args)=>{
-            // const eventName = args.name;
-            // return eventName;
-            const event = {
-                _id:Math.random().toString(),
+            // this is constructor (Model)
+            const event = new Event({
                 title:args.eventInput.title,
                 description:args.eventInput.description,
                 price: +args.eventInput.price,
-                date: args.eventInput.date
-            }
-            events.push(event);
-            return event;
+                // As there is no separate datatype for date
+                date:  new Date(args.eventInput.date)
+            });
+            // do return due to a   ync
+            return event.save()
+            .then((result)=>{
+                console.log(result);
+                // return result;
+                return {...result._doc} ;
+            })
+            .catch((err)=>{
+                console.log(err);
+                throw err;
+            });
+            
         }
     },
     graphiql:true
@@ -67,7 +86,8 @@ app.get('/', (req, res, next)=>{
     res.send('1+1=10')
 })
 // ${process.env.MONGO_USER}
-// ${process.env.MONGO_PASSWORD}
+// ${process.env.MONGO_PASSWORD} ${process.env.MONGO_DB}
+
 mongoose.connect(
     `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@localhost:27017/${process.env.MONGO_DB}?authSource=admin`,
     { useNewUrlParser: true }
