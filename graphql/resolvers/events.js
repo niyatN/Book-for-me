@@ -1,6 +1,6 @@
 const Event = require('../../models/event');
 const {transformEvent} = require('./merge');
-
+const User = require('../../models/user');
 
 
 module.exports= {
@@ -21,15 +21,19 @@ module.exports= {
             throw err;
         });
     },
-    createEvent: (args)=>{
+    createEvent: (args,req)=>{
         // this is constructor (Model)
+        if(!req.isAuth){
+            throw new Error('UNAUTHENTHICATED');
+        }
         const event = new Event({
             title:args.eventInput.title,
             description:args.eventInput.description,
             price: +args.eventInput.price,
             // As there is no separate datatype for date
             date:  new Date(args.eventInput.date),
-            creator: "5c5c741b4de586394f5b10da"
+            // creator: "5c5c741b4de586394f5b10da"
+            creator:req.userId
         });
         let createdEvent;
         // do return due to a   ync
@@ -42,7 +46,8 @@ module.exports= {
             //     date: new Date(result._doc.date).toISOString(),
             //     creator:user.bind(this, result._doc.creator)}
             createdEvent = transformEvent(result);
-            return User.findById("5c5c741b4de586394f5b10da")
+            return User.findById(req.userId)
+            // return User.findById("5c5c741b4de586394f5b10da")
             console.log(result);
             
         })

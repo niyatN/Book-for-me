@@ -8,11 +8,12 @@ const app = express();
 // for db connection
 const mongoose = require('mongoose');
 
-// 
+const isAuth = require('./middleware/is-auth');
 const graphQLSchema = require('./graphql/schema/index');
 const graphQLResolvers = require('./graphql/resolvers/index');
 // middleware
 app.use(bodyParser.json());
+app.use(isAuth);
 
 app.use('/graphql',graphqlHttp({
     schema: graphQLSchema,
