@@ -28,6 +28,23 @@ app.get('/', (req, res, next)=>{
 // ${process.env.MONGO_USER}
 // ${process.env.MONGO_PASSWORD} ${process.env.MONGO_DB}
 
+add=(n)=>{
+    setTimeout(()=>console.log('rrr'), 2000);
+    return(n);
+}
+a=(n)=>{
+    for(i=0;i<n;i++){
+        add(n);
+    }
+    return n;
+}
+b = (n)=>{
+    return (4)
+    .then((a)=>{
+        console.log('I am here');
+    })
+}
+
 mongoose.connect(
     `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@localhost:27017/${process.env.MONGO_DB}?authSource=admin`,
     { useNewUrlParser: true }
