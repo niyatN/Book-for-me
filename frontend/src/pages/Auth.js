@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-
 class AuthPage extends Component{
     render(){
         return(
-            <h1>Auth Page</h1>
+            <div>
+                <h1>Auth Page</h1>
+            </div>
         )
     }
 }
