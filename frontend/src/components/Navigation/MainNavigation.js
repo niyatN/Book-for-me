@@ -1,4 +1,5 @@
 import React,{Component}from 'react';
+import {NavLink} from'react-router-dom';
 
 // import AppBar from '@material-ui/core/AppBar';
 // import Toolbar from '@material-ui/core/Toolbar';
@@ -6,8 +7,10 @@ import React,{Component}from 'react';
 // import IconButton from '@material-ui/core/IconButton';
 // import MenuIcon from '@material-ui/core/MenuItem';
 // import Drawer from '@material-ui/core/Drawer';
+// import MailIcon from '@material-ui/icons/Mail';
+// import InputBase from '@material-ui/core/InputBase';
 
-import {NavLink} from'react-router-dom';
+
 
 // class MainNavigation extends Component{
 //     state={
@@ -22,12 +25,16 @@ import {NavLink} from'react-router-dom';
 //         <div >
 //             <AppBar position="static">
 //                 <Toolbar>
-//                     {/* <IconButton color="inherit" aria-label="Menu">
-//                         <MenuIcon />
-//                     </IconButton> */}
+
 //                     <Typography variant="title" color="inherit" >
 //                     Book For Me
 //                     </Typography>
+//                     <InputBase placeholder="Search…" className="navbar-search"/>
+//                     <div>
+//                         <IconButton color="inherit">
+//                             <MailIcon />
+//                         </IconButton>
+//                     </div>
 //                 </Toolbar>
 //             </AppBar>
 //             <Drawer variant="persistent" open={this.state.drawerIsOpen} />

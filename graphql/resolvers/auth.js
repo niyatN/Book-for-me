@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken');
 module.exports= {
         createUser:(args)=>{
         // to remove duplication of email address
+        // console.log(args);
         return User.findOne({email:args.userInput.email})
         .then((user)=>{
             if(user){
