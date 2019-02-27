@@ -1,6 +1,6 @@
 import React,{Component}from 'react';
 import {NavLink} from'react-router-dom';
-
+import AuthContext from '../../context/auth-context';
 // import AppBar from '@material-ui/core/AppBar';
 // import Toolbar from '@material-ui/core/Toolbar';
 // import Typography from '@material-ui/core/Typography';
@@ -44,18 +44,32 @@ import {NavLink} from'react-router-dom';
 //     }
 // }
 const MainNavigation = props =>(
-    <header>
-        <div className="main-naigation__logo">
-        <h1> Book For Me</h1>
-        </div>
-        <nav className ="main-navigation__item">
-        <ul>
-            <li><NavLink to="/auth">Auth</NavLink></li>
-            <li><NavLink to="/events">Events</NavLink></li>
-            <li><NavLink to="/bookings">Bookings</NavLink></li>
+    <AuthContext.Consumer>
+        {
+            (context)=>{
+            return(
+                <header>
+                    <div className="main-naigation__logo">
+                    <h1> Book For Me</h1>
+                    </div>
+                    <nav className ="main-navigation__item">
+                    <ul>
+                        {
+                            !context.token && (<li><NavLink to="/auth">Auth</NavLink></li>)
+                        }
+                        <li><NavLink to="/events">Events</NavLink></li>
+                        {
+                            context.token && (<li><NavLink to="/bookings">Bookings</NavLink></li>)
+                        }
+                        
+                    </ul>
+                    </nav>
+                </header>
+            )
+            }
+        
+        }
 
-        </ul>
-        </nav>
-    </header>
+    </AuthContext.Consumer>
 )
 export default MainNavigation;

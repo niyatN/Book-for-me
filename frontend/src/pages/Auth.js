@@ -1,15 +1,18 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-
+import AuthContext from '../context/auth-context';
 class AuthPage extends Component{
     state = {
         isLogin:true
     }
+    static contextType = AuthContext;
+
     constructor(props){
         super(props);
         this.emailEl = React.createRef();
         this.passwordEl = React.createRef();
     }
+
     switchLoginToSignUp=()=>{
         this.setState(prevState=>{
             return{isLogin:!prevState.isLogin}
@@ -28,22 +31,31 @@ class AuthPage extends Component{
             console.log(email,password);
             let requestData = {
                 query:`
+                query{
+                    login(email:"${email}",password:"${password}"){
+                      userId
+                      token
+                      tokenExpiration
+                    }
+                  }
                 `
             }
-            const requestData = {
-                query:`
-                mutation{
-                  createUser(userInput:{
-                    email:"${email}",
-                    password:"${password}"
-                  })
-                  {
-                    _id
-                    email
-                  }
-                }
-                `
-            };
+            if(!this.state.isLogin){
+                let requestData = {
+                    query:`
+                    mutation{
+                    createUser(userInput:{
+                        email:"${email}",
+                        password:"${password}"
+                    })
+                    {
+                        _id
+                        email
+                    }
+                    }
+                    `
+                };
+            }
             console.log(requestData)
             axios({
                 method: 'post',
@@ -54,10 +66,19 @@ class AuthPage extends Component{
                 data:requestData
             })
             .then((res)=>{
-                return res;
-            })
-            .then((res)=>{
-                console.log(res.data)
+                
+            
+                let d = {...res.data}
+                console.log(d)
+                if(res.data.login.token){
+                    console.log('Iiiii')
+                    this.context.login(
+                        res.data.login.token,
+                        res.data.login.userId,
+                        res.data.login.tokenExpiration
+                    )
+                }
+
             })
             .catch(err=>{
                 throw err;
