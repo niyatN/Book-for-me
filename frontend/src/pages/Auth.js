@@ -26,6 +26,10 @@ class AuthPage extends Component{
         else{
             // req to backend
             console.log(email,password);
+            let requestData = {
+                query:`
+                `
+            }
             const requestData = {
                 query:`
                 mutation{
