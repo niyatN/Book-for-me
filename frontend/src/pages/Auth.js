@@ -68,16 +68,15 @@ class AuthPage extends Component{
             .then((res)=>{
                 
             
-                let d = {...res.data}
-                console.log(d)
-                if(res.data.login.token){
+                if(res.data.data.login.token){
                     console.log('Iiiii')
                     this.context.login(
-                        res.data.login.token,
-                        res.data.login.userId,
-                        res.data.login.tokenExpiration
+                        res.data.data.login.token,
+                        res.data.data.login.userId,
+                        res.data.data.login.tokenExpiration
                     )
                 }
+
 
             })
             .catch(err=>{
